@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Tasks (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
     description TEXT,
-    status VARCHAR(50) DEFAULT 'Pending',
+    status ENUM('Pending','In Progress','Done') NOT NULL DEFAULT 'Pending',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     category_id INT,
     PRIMARY KEY (id),
