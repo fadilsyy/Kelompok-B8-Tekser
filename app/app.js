@@ -14,6 +14,14 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public')); // untuk css jika mau ditambah nanti
 
+// Prevent caching
+app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+});
+
 // --- ROUTING ---
 // Route To-Dos
 app.use('/', todosRoutes);
