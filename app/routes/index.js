@@ -7,8 +7,8 @@ const pool = require('../config/database');
 router.get('/', async (req, res) => {
     try {
         const [tasks] = await pool.query(
-            `SELECT Tasks.id, Tasks.title, Tasks.description, Tasks.status, Tasks.created_at, Kategori.category_name 
-             FROM Tasks 
+            `SELECT Tasks.id, Tasks.title, Tasks.description, Tasks.status, Tasks.created_at, Kategori.category_name
+             FROM Tasks
              LEFT JOIN Kategori ON Tasks.category_id = Kategori.id
              ORDER BY Tasks.created_at DESC`
         );
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 // Halaman tambah tugas
 router.get('/add', async (req, res) => {
     try {
-        const [categories] = await pool.query(`SELECT * FROM Kategori`);
+        const [categories] = await pool.query('SELECT * FROM Kategori'); // ✅ Fixed
         res.render('add', { categories });
     } catch (err) {
         console.error(err);
@@ -45,14 +45,12 @@ router.post('/add', async (req, res) => {
     }
 });
 
-// ... kode sebelumnya tetap
-
 // Halaman edit tugas
 router.get('/edit/:id', async (req, res) => {
     const taskId = req.params.id;
     try {
-        const [tasks] = await pool.query(`SELECT * FROM Tasks WHERE id = ?`, [taskId]);
-        const [categories] = await pool.query(`SELECT * FROM Kategori`);
+        const [tasks] = await pool.query('SELECT * FROM Tasks WHERE id = ?', [taskId]); // ✅ Fixed
+        const [categories] = await pool.query('SELECT * FROM Kategori'); // ✅ Fixed
         if (tasks.length === 0) return res.send("Task not found");
         res.render('edit', { task: tasks[0], categories });
     } catch (err) {
@@ -81,7 +79,7 @@ router.post('/edit/:id', async (req, res) => {
 router.post('/delete/:id', async (req, res) => {
     const taskId = req.params.id;
     try {
-        await pool.query(`DELETE FROM Tasks WHERE id = ?`, [taskId]);
+        await pool.query('DELETE FROM Tasks WHERE id = ?', [taskId]); // ✅ Fixed
         res.redirect('/');
     } catch (err) {
         console.error(err);
